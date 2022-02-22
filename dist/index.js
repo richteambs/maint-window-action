@@ -53,7 +53,7 @@ function run() {
         }
     });
 }
-run();
+void run();
 
 
 /***/ }),
