@@ -9,7 +9,8 @@ inputs:
       required: true
     duration:
       description: 'The duration of the maintenance window, in minutes. The window will automatically end after this period.'
-      required: false
+      required: true
+      default: '10'
 outputs:
   maintenance-id:
     description: 'The ID of the maintenance window instance that was created. This can be used to cancel the maintenance window if required.'

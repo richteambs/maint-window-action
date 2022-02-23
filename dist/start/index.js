@@ -40,8 +40,10 @@ const wait_1 = __nccwpck_require__(817);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const apiUrl = core.getInput('api-url');
+            const apiUrl = core.getInput('api-url', { required: true });
             core.debug(`API URL: ${apiUrl}`); // debug is only output if you set the secret `ACTIONS_STEP_DEBUG` to true
+            const appKey = core.getInput('app-key', { required: true });
+            const duration = parseInt(core.getInput('duration'));
             core.debug(new Date().toTimeString());
             yield (0, wait_1.wait)(5);
             core.debug(new Date().toTimeString());

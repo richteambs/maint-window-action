@@ -18,7 +18,7 @@ module.exports = {
         devDependencies: ['**/*.test.ts', '**/tests/**/*.ts'],
       },
     ],
-    '@typescript-eslint/indent': [2, 2],
+    '@typescript-eslint/indent': ['error', 2],
     'linebreak-style': ['error', require('os').EOL === '\r\n' ? 'windows' : 'unix'],
     'no-underscore-dangle': ['error', { allowAfterThis: true }],
     'import/extensions': ['error', { ts: 'ignorePackages' }],
@@ -38,14 +38,14 @@ module.exports = {
       parserOptions: {
         ecmaVersion: 9,
         sourceType: 'module',
-        project: './tsconfig.json',
+        // Note that we use a separate tsconfig just for linting, so that we include the test code
+        project: './tsconfig.eslint.json',
       },
     },
     {
       files: ['*.test.ts'],
       rules: {
         'prefer-arrow-callback': 0,
-        'mocha/prefer-arrow-callback': ['error', { allowNamedFunctions: false }],
         'func-names': 0,
         '@typescript-eslint/no-non-null-assertion': 0,
         'no-unused-expressions': 0,
