@@ -1,0 +1,12 @@
+{
+    // Extends the base config so we don't have to redefine everything
+    "extends": "./tsconfig.json",
+    "include": [
+      "src/**/*.ts",
+      "tests/**/*.ts"
+    ],
+    "compilerOptions": {
+      "allowJs": true,
+      "checkJs": true
+    }
+  }

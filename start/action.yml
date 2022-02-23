@@ -1,0 +1,19 @@
+name: 'Maintenance: Start maintenance'
+description: 'Registers a maintenance window in the website availability monitoring system'
+inputs:
+    api-url:
+      description: 'The root URL of the Maintainizr Azure Function App'
+      required: true
+    api-key:
+      description: 'The Host Key for the Maintainizr Azure Function App'
+      required: true
+    duration:
+      description: 'The duration of the maintenance window, in minutes. The window will automatically end after this period.'
+      required: true
+      default: '10'
+outputs:
+  maintenance-id:
+    description: 'The ID of the maintenance window instance that was created. This can be used to cancel the maintenance window if required.'
+runs:
+    using: 'node16'
+    main: ../dist/start/index.js
