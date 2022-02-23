@@ -16,4 +16,4 @@ outputs:
     description: 'The ID of the maintenance window instance that was created. This can be used to cancel the maintenance window if required.'
 runs:
     using: 'node16'
-    main: ../dist/start.js
+    main: ../dist/start/index.js
