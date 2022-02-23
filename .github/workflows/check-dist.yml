@@ -9,7 +9,7 @@ on:
   push:
     branches:
       - main
-      - 'feature/*'
+      - 'release/*'
     paths-ignore:
       - '**.md'
   pull_request:

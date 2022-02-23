@@ -1,12 +1,10 @@
 {
-    // extend your base config so you don't have to redefine your compilerOptions
+    // Extends the base config so we don't have to redefine everything
     "extends": "./tsconfig.json",
     "include": [
       "src/**/*.ts",
-      "tests/**/*.ts",
-      "typings/**/*.ts"
+      "tests/**/*.ts"
     ],
-    // IF (and only if) you have a mixed JS/TS codebase - you should also turn on JS support
     "compilerOptions": {
       "allowJs": true,
       "checkJs": true
