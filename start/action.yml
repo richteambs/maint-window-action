@@ -7,6 +7,9 @@ inputs:
     api-key:
       description: 'The Host Key for the Maintainizr Azure Function App'
       required: true
+    monitor-id:
+      description: 'The ID of the monitor that should be suspended during the maintenance window'
+      required: true
     duration:
       description: 'The duration of the maintenance window, in minutes. The window will automatically end after this period.'
       required: true
