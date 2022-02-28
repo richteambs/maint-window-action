@@ -1,10 +1,10 @@
 name: 'Maintenance: Start maintenance'
 description: 'Registers a maintenance window in the website availability monitoring system'
 inputs:
-    api-url:
+    app-url:
       description: 'The root URL of the Maintainizr Azure Function App'
       required: true
-    api-key:
+    app-key:
       description: 'The Host Key for the Maintainizr Azure Function App'
       required: true
     monitor-id:

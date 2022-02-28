@@ -5,7 +5,7 @@ import { ProblemDetails, MaintenanceOccurrence } from '../maintainizr-api';
 import { invokeActionScript, getAllErrors, getOutputVariables, ActionResult } from './test-utils';
 
 interface StartActionParams {
-  apiUrl: string | null;
+  appUrl: string | null;
   appKey: string | null;
   monitorId: string | null;
   duration: number | null;
@@ -13,7 +13,7 @@ interface StartActionParams {
 }
 
 const DefaultParams: StartActionParams = {
-  apiUrl: 'http://dummy.example.com/',
+  appUrl: 'http://dummy.example.com/',
   appKey: '12345',
   monitorId: '987654321',
   duration: 10,
@@ -104,8 +104,8 @@ function runAction(params: StartActionParams): ActionResult {
     MAINTZ_USE_FAKE_API: 'true',
   };
 
-  if (params.apiUrl !== null) {
-    env['INPUT_API-URL'] = params.apiUrl;
+  if (params.appUrl !== null) {
+    env['INPUT_APP-URL'] = params.appUrl;
   }
 
   if (params.appKey !== null) {
