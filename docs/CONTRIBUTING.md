@@ -110,7 +110,5 @@ you are encouraged to fix the [pre-commit hook](./.husky/pre-commit) to eliminat
 There is no way to bypass the CI checks - there is no valid reason to commit code that hasn't been
 packaged, and certainly not to add it to a PR.
 
-
-
 TODO: versioning workflow
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
