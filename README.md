@@ -13,8 +13,8 @@ Use this action to start a maintenance window.
 
 | Parameter | Description  |
 | --------- | ------------ |
-| `app-url` | See _Common connection parameters_ section below. |
-| `app-key` | See _Common connection parameters_ section below. |
+| `app-url` | See [below](#common-connection-parameters). |
+| `app-key` | See [below](#common-connection-parameters). |
 | `monitor-id` | The ID of the monitor that should be suspended during the maintenance window. This will be a long numeric string such as `633320000127123456` |
 | `duration` | The planned duration of the maintenance window, in minutes. The window will automatically end after this period. |
 
@@ -52,8 +52,8 @@ If you pass an invalid maintenance id, the action will report an error.
 
 | Parameter | Description  |
 | --------- | ------------ |
-| `app-url` | See _Common connection parameters_ section below. |
-| `app-key` | See _Common connection parameters_ section below. |
+| `app-url` | See [below](#common-connection-parameters). |
+| `app-key` | See [below](#common-connection-parameters). |
 | `maintenance-id` | The ID of the maintenance window to terminate. This should be the value output by the `start` action. |
 
 ### Example
