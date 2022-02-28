@@ -11,7 +11,7 @@ inputs:
       description: 'The ID of the monitor that should be suspended during the maintenance window'
       required: true
     duration:
-      description: 'The duration of the maintenance window, in minutes. The window will automatically end after this period.'
+      description: 'The planned duration of the maintenance window, in minutes. The window will automatically end after this period.'
       required: true
       default: '10'
 outputs:
