@@ -1,6 +1,6 @@
 # Sample workflow that uses a manual trigger to demonstrate how to use the actions in this repo
 
-name: 'action-samples'
+name: 'Run sample actions'
 on:
   workflow_dispatch:
 
