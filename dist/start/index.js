@@ -149,7 +149,7 @@ const maintainizr_api_1 = __nccwpck_require__(5634);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const apiUrl = core.getInput('api-url', { required: true });
+            const appUrl = core.getInput('app-url', { required: true });
             const appKey = core.getInput('app-key', { required: true });
             const monitorID = core.getInput('monitor-id', { required: true });
             const duration = parseInt(core.getInput('duration', { required: true }));
@@ -157,7 +157,7 @@ function run() {
                 core.setFailed("Input 'duration' must be between 1 and 1440 minutes");
                 return;
             }
-            const api = new maintainizr_api_1.MaintainizrApi(apiUrl, appKey);
+            const api = new maintainizr_api_1.MaintainizrApi(appUrl, appKey);
             const response = yield api.startMaintenance(monitorID, duration);
             core.startGroup('Maintainizr API response');
             core.info(`status: ${response.status} ${response.statusText}`);
