@@ -1,11 +1,11 @@
 # Sample workflow that uses a manual trigger to demonstrate how to use the actions in this repo
 
-name: 'sample'
+name: 'action-samples'
 on:
   workflow_dispatch:
 
 jobs:
-  example:
+  'start-example':
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
