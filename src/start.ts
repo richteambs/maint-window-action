@@ -5,7 +5,7 @@ import { MaintainizrApi, isProblemDetails } from './maintainizr-api';
 
 async function run(): Promise<void> {
   try {
-    const apiUrl: string = core.getInput('api-url', { required: true });
+    const appUrl: string = core.getInput('app-url', { required: true });
     const appKey: string = core.getInput('app-key', { required: true });
     const monitorID: string = core.getInput('monitor-id', { required: true });
     const duration: number = parseInt(core.getInput('duration', { required: true }));
@@ -15,7 +15,7 @@ async function run(): Promise<void> {
       return;
     }
 
-    const api = new MaintainizrApi(apiUrl, appKey);
+    const api = new MaintainizrApi(appUrl, appKey);
     const response = await api.startMaintenance(monitorID, duration);
 
     core.startGroup('Maintainizr API response');
