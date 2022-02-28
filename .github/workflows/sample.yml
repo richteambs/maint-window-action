@@ -13,5 +13,5 @@ jobs:
         with:
           app-url: ${{ secrets.MAINTZ_FUNC_URL }}
           app-key: ${{ secrets.MAINTZ_FUNC_APP_KEY }}
-          monitor-id: 63332000012700001 # Glider-Staging - our test monitor
+          monitor-id: '63332000012700001' # Glider-Staging - our test monitor
           duration: 1 # 1 minute
