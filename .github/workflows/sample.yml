@@ -1,0 +1,17 @@
+# Sample workflow that uses a manual trigger to demonstrate how to use the actions in this repo
+
+name: 'sample'
+on:
+  workflow_dispatch:
+
+jobs:
+  example:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./start
+        with:
+          api-url: ${{ secrets.MAINTZ_FUNC_URL }}
+          api-key: ${{ secrets.MAINTZ_FUNC_APP_KEY }}
+          monitorId: 1
+          duration: 1 # 1 minute
