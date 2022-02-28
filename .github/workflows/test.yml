@@ -1,4 +1,4 @@
-name: 'build-test'
+name: 'Build & Test'
 on: # rebuild any PRs and main / release branch changes
   pull_request:
   push:
@@ -19,6 +19,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ./main
+      - id: start
+        name: Start maintenance window
+        uses: ./start
         with:
-          milliseconds: 1000
+          app-url: ${{ secrets.MAINTZ_FUNC_URL }}
+          app-key: ${{ secrets.MAINTZ_FUNC_APP_KEY }}
+          monitor-id: '63332000012700001' # Glider-Staging - our test monitor
+          duration: 1 # 1 minute
