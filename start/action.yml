@@ -1,5 +1,5 @@
-name: 'Maintenance: Start maintenance'
-description: 'Registers a maintenance window in the website availability monitoring system'
+name: 'Maintainizr: Start maintenance'
+description: 'Starts a maintenance window in the website availability monitoring system'
 inputs:
     app-url:
       description: 'The root URL of the Maintainizr Azure Function App'

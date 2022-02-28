@@ -9,7 +9,7 @@
     "format": "prettier --write **/*.ts",
     "format-check": "prettier --check **/*.ts",
     "lint": "eslint src/**/*.ts",
-    "package": "ncc build lib/main.js --source-map --license licenses.txt -o dist/main && ncc build lib/start.js --source-map --license licenses.txt -o dist/start",
+    "package": "ncc build lib/start.js --source-map --license licenses.txt -o dist/start && ncc build lib/end.js --source-map --license licenses.txt -o dist/end",
     "test": "jest",
     "all": "npm ci && npm run build && npm run format-check && npm run lint && npm test && npm run package",
     "prepare": "husky install"
