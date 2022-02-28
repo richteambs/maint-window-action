@@ -38,7 +38,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.isProblemDetails = exports.MaintainizrApi = void 0;
+exports.isMaintenanceOccurrence = exports.MaintainizrApi = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
 class MaintainizrApi {
@@ -98,10 +98,10 @@ class MaintainizrApi {
     }
 }
 exports.MaintainizrApi = MaintainizrApi;
-function isProblemDetails(data) {
-    return data.status !== undefined;
+function isMaintenanceOccurrence(data) {
+    return data.maintenanceId !== undefined;
 }
-exports.isProblemDetails = isProblemDetails;
+exports.isMaintenanceOccurrence = isMaintenanceOccurrence;
 
 
 /***/ }),
@@ -168,7 +168,7 @@ function run() {
                 core.info('No response content');
             }
             core.endGroup();
-            if (response.status < 200 || response.status > 299 || (0, maintainizr_api_1.isProblemDetails)(response.data)) {
+            if (response.status < 200 || response.status > 299 || !(0, maintainizr_api_1.isMaintenanceOccurrence)(response.data)) {
                 core.setFailed(`Call failed to Maintainizr API: ${response.status} ${response.statusText}`);
             }
             else {

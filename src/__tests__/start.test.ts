@@ -29,6 +29,11 @@ describe('gh start action', () => {
       config: {},
       data: {
         maintenanceId: '902010',
+        displayName: 'Ad hoc maintenance',
+        status: 'scheduled',
+        startDateTime: '2022-02-28T09:38:00+00:00',
+        endDateTime: '2022-02-28T09:39:00+00:00',
+        monitors: ['1234567890'],
       },
     };
 

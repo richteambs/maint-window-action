@@ -7,8 +7,14 @@ interface StartMaintenanceParams {
 
 export interface MaintenanceOccurrence {
   maintenanceId: string;
+  displayName: string;
+  status: string;
+  startDateTime: string;
+  endDateTime: string;
+  monitors: string[];
 }
 
+// https://datatracker.ietf.org/doc/html/rfc7807
 export interface ProblemDetails {
   type?: string;
   title?: string;
@@ -90,6 +96,6 @@ export class MaintainizrApi {
   }
 }
 
-export function isProblemDetails(data: unknown): data is ProblemDetails {
-  return (data as ProblemDetails).status !== undefined;
+export function isMaintenanceOccurrence(data: unknown): data is MaintenanceOccurrence {
+  return (data as MaintenanceOccurrence).maintenanceId !== undefined;
 }

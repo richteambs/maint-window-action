@@ -1,6 +1,6 @@
 import { jest, expect, describe, it, afterEach } from '@jest/globals';
 import axios, { AxiosResponse, AxiosRequestConfig } from 'axios';
-import { MaintainizrApi, isProblemDetails, ProblemDetails, MaintenanceOccurrence } from '../maintainizr-api';
+import { MaintainizrApi, ProblemDetails, MaintenanceOccurrence, isMaintenanceOccurrence } from '../maintainizr-api';
 
 jest.mock('axios');
 const mockAxios = jest.mocked(axios, true);
@@ -50,6 +50,11 @@ describe('MaintainizrApi', () => {
         config: {},
         data: {
           maintenanceId: '90201',
+          displayName: 'Ad hoc maintenance',
+          status: 'scheduled',
+          startDateTime: '2022-02-28T09:38:00+00:00',
+          endDateTime: '2022-02-28T09:39:00+00:00',
+          monitors: ['1234567890'],
         },
       };
       return Promise.resolve(response);
@@ -62,8 +67,8 @@ describe('MaintainizrApi', () => {
 
     // *** ASSERT ***
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
-    if (isProblemDetails(response.data)) {
-      throw "Shouldn't happen";
+    if (!isMaintenanceOccurrence(response.data)) {
+      throw new Error("Shouldn't get here");
     }
     expect(response.data.maintenanceId).toBe('90201');
   });
@@ -90,8 +95,7 @@ describe('MaintainizrApi', () => {
     const response = await api.startMaintenance('500', 1);
 
     // *** ASSERT ***
-    const isProblem = isProblemDetails(response.data);
-    expect(isProblem).toBe(true);
+    expect(response.status).toBe(502);
     expect(mockAxios.post).toHaveBeenCalledTimes(1);
   });
 });
