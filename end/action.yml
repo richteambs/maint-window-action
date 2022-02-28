@@ -1,0 +1,15 @@
+name: 'Maintainizr: End maintenance'
+description: 'Terminates a maintenance window in the website availability monitoring system'
+inputs:
+    app-url:
+      description: 'The root URL of the Maintainizr Azure Function App'
+      required: true
+    app-key:
+      description: 'The Host Key for the Maintainizr Azure Function App'
+      required: true
+    maintenance-id:
+      description: 'The ID of the maintenance window to terminate'
+      required: true
+runs:
+    using: 'node16'
+    main: ../dist/start/index.js

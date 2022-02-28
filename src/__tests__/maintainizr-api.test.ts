@@ -5,7 +5,7 @@ import { MaintainizrApi, ProblemDetails, MaintenanceOccurrence, isMaintenanceOcc
 jest.mock('axios');
 const mockAxios = jest.mocked(axios, true);
 
-describe('MaintainizrApi', () => {
+describe('Start maintenance', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
@@ -60,7 +60,7 @@ describe('MaintainizrApi', () => {
       return Promise.resolve(response);
     });
 
-    const api = new MaintainizrApi('', '');
+    const api = new MaintainizrApi('rootUrl', 'appKey');
 
     // *** ACT ***
     const response = await api.startMaintenance('567', 43);
@@ -93,6 +93,65 @@ describe('MaintainizrApi', () => {
 
     // *** ACT ***
     const response = await api.startMaintenance('500', 1);
+
+    // *** ASSERT ***
+    expect(response.status).toBe(502);
+    expect(mockAxios.post).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('End maintenance', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('calls the API endpoint correctly', async () => {
+    // *** ARRANGE ***
+    mockAxios.post.mockImplementation(() => {
+      const response: AxiosResponse = {
+        status: 200,
+        statusText: 'OK',
+        headers: {},
+        config: {},
+        data: null,
+      };
+      return Promise.resolve(response);
+    });
+
+    const api = new MaintainizrApi('http://localhost:7071/', '12345');
+
+    // *** ACT ***
+    await api.endMaintenance('567');
+
+    // *** ASSERT ***
+    expect(mockAxios.post).toHaveBeenCalledTimes(1);
+
+    const call = mockAxios.post.mock.calls[0];
+    expect(call[0]).toBe('http://localhost:7071/api/maintenance/567/end');
+    expect(call[1]).toBeNull();
+    expect((call[2] as AxiosRequestConfig).headers).toHaveProperty('x-functions-key', '12345');
+  });
+
+  it('handles API error', async () => {
+    // *** ARRANGE ***
+    mockAxios.post.mockImplementation(() => {
+      const response: AxiosResponse<ProblemDetails> = {
+        status: 502,
+        statusText: 'Bad gateway',
+        headers: {},
+        config: {},
+        data: {
+          status: 502,
+          title: 'Error',
+        },
+      };
+      return Promise.resolve(response);
+    });
+
+    const api = new MaintainizrApi('rootUrl', 'appKey');
+
+    // *** ACT ***
+    const response = await api.endMaintenance('123');
 
     // *** ASSERT ***
     expect(response.status).toBe(502);

@@ -23,7 +23,9 @@ export interface ProblemDetails {
   instance?: string;
 }
 
-type MaintenanceResponseContent = MaintenanceOccurrence | ProblemDetails;
+type StartMaintenanceResponseContent = MaintenanceOccurrence | ProblemDetails;
+
+type EndMaintenanceResponseContent = never | ProblemDetails;
 
 export class MaintainizrApi {
   rootUrl: string;
@@ -35,7 +37,7 @@ export class MaintainizrApi {
     this.appKey = appKey;
   }
 
-  async startMaintenance(monitorID: string, duration: number): Promise<AxiosResponse<MaintenanceResponseContent>> {
+  async startMaintenance(monitorID: string, duration: number): Promise<AxiosResponse<StartMaintenanceResponseContent>> {
     if (process.env['MAINTZ_USE_FAKE_API']?.toLowerCase() === 'true') {
       return this.callFakeStartMaintenanceApi(monitorID, duration);
     } else {
@@ -43,10 +45,18 @@ export class MaintainizrApi {
     }
   }
 
+  public endMaintenance(maintenanceID: string): Promise<AxiosResponse<EndMaintenanceResponseContent>> {
+    if (process.env['MAINTZ_USE_FAKE_API']?.toLowerCase() === 'true') {
+      return this.callFakeEndMaintenanceApi(maintenanceID);
+    } else {
+      return this.callRealEndMaintenanceApi(maintenanceID);
+    }
+  }
+
   private async callRealStartMaintenanceApi(
     monitorID: string,
     duration: number
-  ): Promise<AxiosResponse<MaintenanceResponseContent>> {
+  ): Promise<AxiosResponse<StartMaintenanceResponseContent>> {
     try {
       const url = `${this.rootUrl}/api/monitors/${monitorID}/start-maintenance`;
       core.info(`Target URL: ${url}`);
@@ -80,16 +90,61 @@ export class MaintainizrApi {
     }
   }
 
+  private async callRealEndMaintenanceApi(
+    maintenanceID: string
+  ): Promise<AxiosResponse<EndMaintenanceResponseContent>> {
+    try {
+      const url = `${this.rootUrl}/api/maintenance/${maintenanceID}/end`;
+      core.info(`Target URL: ${url}`);
+
+      const headers: AxiosRequestHeaders = { 'x-functions-key': this.appKey };
+      const config: AxiosRequestConfig = {
+        headers,
+        // 👇 Don't throw an error for non-success HTTP status, we'll handle it ourselves
+        validateStatus: () => true,
+      };
+
+      const response = await axios.post<StartMaintenanceParams, AxiosResponse<EndMaintenanceResponseContent>>(
+        url,
+        null,
+        config
+      );
+
+      return response;
+    } catch (err) {
+      const error = err as Error | AxiosError;
+      if (axios.isAxiosError(error)) {
+        core.startGroup('Axios error details');
+        core.info(JSON.stringify(error.toJSON()));
+        core.endGroup();
+      }
+
+      throw err;
+    }
+  }
+
   private async callFakeStartMaintenanceApi(
     _monitorID: string,
     _duration: number
-  ): Promise<AxiosResponse<MaintenanceResponseContent>> {
+  ): Promise<AxiosResponse<StartMaintenanceResponseContent>> {
     const responseContent = process.env['MAINTZ_FAKE_RESPONSE_CONTENT'];
     if (!responseContent) {
       throw new Error('Environment variable MAINTZ_USE_FAKE_API is set, but MAINTZ_FAKE_RESPONSE_CONTENT is not set');
     }
 
-    const response: AxiosResponse<MaintenanceResponseContent> = <AxiosResponse<MaintenanceResponseContent>>(
+    const response: AxiosResponse<StartMaintenanceResponseContent> = <AxiosResponse<StartMaintenanceResponseContent>>(
+      JSON.parse(responseContent)
+    );
+    return Promise.resolve(response);
+  }
+
+  private callFakeEndMaintenanceApi(_maintenanceID: string): Promise<AxiosResponse<EndMaintenanceResponseContent>> {
+    const responseContent = process.env['MAINTZ_FAKE_RESPONSE_CONTENT'];
+    if (!responseContent) {
+      throw new Error('Environment variable MAINTZ_USE_FAKE_API is set, but MAINTZ_FAKE_RESPONSE_CONTENT is not set');
+    }
+
+    const response: AxiosResponse<EndMaintenanceResponseContent> = <AxiosResponse<EndMaintenanceResponseContent>>(
       JSON.parse(responseContent)
     );
     return Promise.resolve(response);

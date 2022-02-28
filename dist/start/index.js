@@ -58,6 +58,15 @@ class MaintainizrApi {
             }
         });
     }
+    endMaintenance(maintenanceID) {
+        var _a;
+        if (((_a = process.env['MAINTZ_USE_FAKE_API']) === null || _a === void 0 ? void 0 : _a.toLowerCase()) === 'true') {
+            return this.callFakeEndMaintenanceApi(maintenanceID);
+        }
+        else {
+            return this.callRealEndMaintenanceApi(maintenanceID);
+        }
+    }
     callRealStartMaintenanceApi(monitorID, duration) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -86,6 +95,31 @@ class MaintainizrApi {
             }
         });
     }
+    callRealEndMaintenanceApi(maintenanceID) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const url = `${this.rootUrl}/api/maintenance/${maintenanceID}/end`;
+                core.info(`Target URL: ${url}`);
+                const headers = { 'x-functions-key': this.appKey };
+                const config = {
+                    headers,
+                    // 👇 Don't throw an error for non-success HTTP status, we'll handle it ourselves
+                    validateStatus: () => true,
+                };
+                const response = yield axios_1.default.post(url, null, config);
+                return response;
+            }
+            catch (err) {
+                const error = err;
+                if (axios_1.default.isAxiosError(error)) {
+                    core.startGroup('Axios error details');
+                    core.info(JSON.stringify(error.toJSON()));
+                    core.endGroup();
+                }
+                throw err;
+            }
+        });
+    }
     callFakeStartMaintenanceApi(_monitorID, _duration) {
         return __awaiter(this, void 0, void 0, function* () {
             const responseContent = process.env['MAINTZ_FAKE_RESPONSE_CONTENT'];
@@ -95,6 +129,14 @@ class MaintainizrApi {
             const response = (JSON.parse(responseContent));
             return Promise.resolve(response);
         });
+    }
+    callFakeEndMaintenanceApi(_maintenanceID) {
+        const responseContent = process.env['MAINTZ_FAKE_RESPONSE_CONTENT'];
+        if (!responseContent) {
+            throw new Error('Environment variable MAINTZ_USE_FAKE_API is set, but MAINTZ_FAKE_RESPONSE_CONTENT is not set');
+        }
+        const response = (JSON.parse(responseContent));
+        return Promise.resolve(response);
     }
 }
 exports.MaintainizrApi = MaintainizrApi;
