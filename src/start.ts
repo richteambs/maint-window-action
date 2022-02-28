@@ -1,7 +1,7 @@
 import * as core from '@actions/core';
 import axios, { AxiosError } from 'axios';
 
-import { MaintainizrApi, isProblemDetails } from './maintainizr-api';
+import { MaintainizrApi, isMaintenanceOccurrence } from './maintainizr-api';
 
 async function run(): Promise<void> {
   try {
@@ -27,7 +27,7 @@ async function run(): Promise<void> {
     }
     core.endGroup();
 
-    if (response.status < 200 || response.status > 299 || isProblemDetails(response.data)) {
+    if (response.status < 200 || response.status > 299 || !isMaintenanceOccurrence(response.data)) {
       core.setFailed(`Call failed to Maintainizr API: ${response.status} ${response.statusText}`);
     } else {
       core.setOutput('maintenance-id', response.data.maintenanceId);
