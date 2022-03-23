@@ -6,16 +6,10 @@
 name: Check dist/ directory
 
 on:
-  push:
+  pull_request:
     branches:
       - main
       - 'release/*'
-    paths-ignore:
-      - '**.md'
-  pull_request:
-    paths-ignore:
-      - '**.md'
-  workflow_dispatch:
 
 jobs:
   check-dist:
