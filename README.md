@@ -76,12 +76,8 @@ to all the actions in this repository.
 | Parameter | Description  |
 | --------- | ------------ |
 | `app-url` | The root URL of the Maintainizr API. |
-| `app-key` | A secret key that is required for security purposes. :warning: This value should not be stored in plaintext in your repo or anywhere else in GitHub, except as an [encrypted secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets). |
+| `app-key` | A secret key that is required for security purposes. <br/>:warning: This value should not be stored in plaintext in your repo or anywhere else in GitHub, except as an [encrypted secret](https://docs.github.com/en/actions/security-guides/encrypted-secrets). |
 
 [This
 article](https://mbs.atlassian.net/wiki/spaces/DO/pages/2419523603/Creating+an+Azure+Function+App+Service+Connection/)
 documents how to find out the values to use for these parameters.
-
-### Default values
-
-TODO - see [issue](https://github.com/richteambs/maintainizr-action/issues/17).
