@@ -6,10 +6,10 @@
 name: Check dist/
 
 on:
+  push:
+    branches: [ 'main' ]
   pull_request:
-    branches:
-    - main
-    - release/*
+    branches: [ 'main' ]
 
 jobs:
   check-dist:
