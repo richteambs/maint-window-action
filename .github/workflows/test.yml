@@ -1,29 +1,31 @@
 name: 'Build & Test'
-on: # rebuild any PRs and main / release branch changes
+
+on:
   pull_request:
     branches:
-      - main
-      - 'release/*'
+    - main
+    - release/*
 
 jobs:
   build: # make sure build/ci work properly
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - run: |
-          npm ci
-      - run: |
-          npm run all
+    - uses: actions/checkout@v3
+    - run: |
+        npm ci
+    - run: |
+        npm run all
   test: # make sure the action works on a clean machine without building
     runs-on: ubuntu-latest
-    needs: ['build']
+    needs: 
+    - build
     steps:
-      - uses: actions/checkout@v3
-      - id: start
-        name: Start maintenance window
-        uses: ./start
-        with:
-          app-url: ${{ secrets.MAINTZ_FUNC_URL }}
-          app-key: ${{ secrets.MAINTZ_FUNC_APP_KEY }}
-          monitor-id: '63332000012700001' # Glider-Staging - our test monitor
-          duration: 1 # 1 minute
+    - uses: actions/checkout@v3
+    - id: start
+      name: Start maintenance window
+      uses: ./start
+      with:
+        app-url: ${{ secrets.MAINTZ_FUNC_URL }}
+        app-key: ${{ secrets.MAINTZ_FUNC_APP_KEY }}
+        monitor-id: '63332000012700001' # Glider-Staging - our test monitor
+        duration: 1 # 1 minute
