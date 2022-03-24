@@ -48,7 +48,7 @@ jobs:
         release-type: ${{ github.event.inputs.release-type }}
 
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v3
+      uses: peter-evans/create-pull-request@v4
       with:
         commit-message: 'chore: Update changelog for release ${{ steps.update-changelog.outputs.release-version }}'
         committer: 'releasebot <noreply@github.com>'
