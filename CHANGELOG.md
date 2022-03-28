@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## Unreleased
 
-## Added
+### Added
 
 - Use PAT instead of GITHUB_TOKEN to enable triggering workflows when a PR is created
 
