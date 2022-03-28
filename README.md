@@ -81,3 +81,7 @@ to all the actions in this repository.
 [This
 article](https://mbs.atlassian.net/wiki/spaces/DO/pages/2419523603/Creating+an+Azure+Function+App+Service+Connection/)
 documents how to find out the values to use for these parameters.
+
+### Credits
+
+[Rocket Icon Vectors by Vecteezy](https://www.vecteezy.com/free-vector/rocket-icon)
