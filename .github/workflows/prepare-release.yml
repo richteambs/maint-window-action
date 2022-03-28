@@ -65,3 +65,8 @@ jobs:
 
           ${{ steps.update-changelog.outputs.release-notes }}
         labels: autorelease
+
+    - name: Output summary
+      run: |
+        echo "::notice title=Release PR Prepared::A release PR has been created, please merge it to continue with the release process: ${{ steps.create-release-pr.outputs.pull-request-url }}"
+  
