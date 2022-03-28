@@ -21,8 +21,7 @@ on:
 name: '[autorelease] Prepare release PR'
 
 jobs:
-  changelog:
-    name: Update changelog and create PR
+  create-release-pr:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -53,11 +52,12 @@ jobs:
       with:
         release-type: ${{ github.event.inputs.release-type }}
 
-    - name: Create Pull Request
+    - name: Create pull request
+      id: create-pr
       uses: peter-evans/create-pull-request@v4
       with:
         commit-message: 'chore: Update changelog for release ${{ steps.update-changelog.outputs.release-version }}'
-        committer: 'releasebot <noreply@github.com>'
+        committer: 'tagreleasebot <noreply@github.com>'
         branch: 'autorelease/${{ steps.update-changelog.outputs.release-version }}'
         title: '[autorelease] Release ${{ steps.update-changelog.outputs.release-version }}'
         # Be careful of newlines here. We need to use the literal block chomping style (|) so that the
@@ -65,9 +65,11 @@ jobs:
         body: |
           **This PR was created automatically by the releasebot**
 
-          **NOTE: Approving this PR will trigger a workflow that generates a draft release. You need to publish this release when you are happy with it.**
+          :warning: **Approving this PR will trigger a workflow that generates a draft release. You need to publish this release when you are happy with it.** :warning:
 
-          The changes in this PR prepare for release ${{ steps.update-changelog.outputs.release-version }}. They include:
+          The changes in this PR prepare for release ${{ steps.update-changelog.outputs.release-version }}. Release notes:
+
+          ---
 
           ${{ steps.update-changelog.outputs.release-notes }}
         labels: autorelease
@@ -76,5 +78,5 @@ jobs:
 
     - name: Output summary
       run: |
-        echo "::notice title=Release PR Prepared::A release PR has been created, please merge it to continue with the release process: ${{ steps.create-release-pr.outputs.pull-request-url }}"
+        echo "::notice title=Release PR Prepared::PR ${{ steps.create-pr.outputs.pull-request-number }} has been created, please merge it to continue with the release process: ${{ steps.create-pr.outputs.pull-request-url }}"
   

@@ -116,12 +116,22 @@ release PR, you should abandon that PR and start over.
 
 ### Publish the release
 
-When the release PR is merged, it triggers an automated workflow that creates a draft GitHub
-release. All you need to do now is validate the release, then publish it.
+When the release PR is merged, it triggers an automated workflow that creates a _draft_ GitHub
+release. All you need to do now is check that you're happy with the release, then publish it.
 
-Your action is now published! :rocket:
+The actions are now published! :rocket:
 
-At this point, it's a good idea to create or update the major version tag, e.g. `v1`. This is
-currently a manual task, but automation will be added shortly. The process is described in the
-action versioning
+At this point, an automated workflow kicks in that creates or updates the major version tag, e.g.
+`v1`. The process is described in the action versioning
 [documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md).
+
+## The TAG Release Bot
+
+We use a custom GitHub App to create tokens as part of the release workflows. This is to work around
+the problem that the standard `GITHUB_TOKEN` doesn't trigger further workflows by design. This
+causes us a problem, because the release PR can't be merged onto `main` until the checks run, but
+the check workflows won't get triggered for the above reason.
+
+A GitHub App is the [recommended
+method](https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#authenticating-with-github-app-generated-tokens)
+for creating a PR that will run the automated checks.

@@ -27,7 +27,7 @@ Use this action to start a maintenance window.
 ### Example
 
 ```yaml
-uses: richteambs/maintainizr-action/start
+uses: richteambs/maintainizr-action/start@v1
 with:
     app-url: ${{ secrets.MAINTZ_FUNC_URL }}
     app-key: ${{ secrets.MAINTZ_FUNC_APP_KEY }}
@@ -59,7 +59,7 @@ If you pass an invalid maintenance id, the action will report an error.
 ### Example
 
 ```yaml
-uses: richteambs/maintainizr-action/end
+uses: richteambs/maintainizr-action/end@v1
 with:
     app-url: '${{ secrets.MAINTZ_FUNC_URL }}'
     app-key: ${{ secrets.MAINTZ_FUNC_APP_KEY }}
@@ -80,7 +80,7 @@ to all the actions in this repository.
 
 [This
 article](https://mbs.atlassian.net/wiki/spaces/DO/pages/2419523603/Creating+an+Azure+Function+App+Service+Connection/)
-documents how to find out the values to use for these parameters.
+(MBS Confluence) documents how to find out the values to use for these parameters.
 
 ### Credits
 

@@ -1,3 +1,5 @@
+# This workflow is triggered when a release is published. It updates the 'major version tag' 
+# - e.g. v1 - and moves it to point at the latest release.
 on:
   release:
     types: [published]
@@ -29,10 +31,12 @@ jobs:
         echo "::set-output name=major-ref::v$MAJOR"
         if [[ "$PRERELEASE" ]]; then pre=true; else pre=false; fi
         echo "::set-output name=is-prerelease::$pre"
+
     - name: Prerelease
       if: fromJSON(steps.get-release-version.outputs.is-prerelease)
       run: |
         echo "::notice::Pre-release version detected, not moving ref  ${{ steps.get-release-version.outputs.major-ref }}"
+
     - name: Update release tag
       if: ${{ ! fromJSON(steps.get-release-version.outputs.is-prerelease) }}
       run: |        

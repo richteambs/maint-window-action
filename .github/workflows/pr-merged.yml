@@ -1,3 +1,7 @@
+# This workflow is triggered when a PR is closed. It does the following:
+#  - Check that the PR was merged (if not we can ignore)
+#  - Check that the PR has the 'autorelease' label (if not we can ignore)
+#  - Creates a draft release 
 on:
   pull_request:
     branches:
@@ -7,7 +11,7 @@ on:
 name: '[autorelease] PR merged'
 
 jobs:
-  merge:
+  create-release:
     runs-on: ubuntu-latest
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'autorelease')
     steps:
@@ -31,22 +35,25 @@ jobs:
       with:
         release-version: ${{ steps.get-release-version.outputs.release-version}}
 
-    - name: Display release notes
-      run: |
-        echo "${{ steps.get-release-notes.outputs.release-notes }}"
 
-    - name: Create Draft Release
+    - uses: tibdex/github-app-token@v1
+      id: generate-token
+      with:
+        app_id: ${{ secrets.TAGRELEASEBOT_APP_ID }}
+        private_key: ${{ secrets.TAGRELEASEBOT_APP_KEY }}
+
+    - name: Create draft release
       id: create_release
       uses: actions/create-release@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        GITHUB_TOKEN: ${{ steps.generate-token.outputs.token }}
       with:
         tag_name: 'v${{ steps.get-release-version.outputs.release-version }}'
         release_name: 'Release ${{ steps.get-release-version.outputs.release-version }}'
         draft: true
         body: ${{ steps.get-release-notes.outputs.release-notes }}
 
-    - name: Display Instructions
+    - name: Display instructions
       run: |
         echo "::notice title=Draft Release Prepared::Draft release ${{ steps.create_release.outputs.id }} has been prepared for you to approve: ${{ steps.create_release.outputs.html_url }}"
   
