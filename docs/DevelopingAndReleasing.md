@@ -1,9 +1,12 @@
 # Developing and Releasing
 
+This document is aimed at developers who are maintaining these Maintainizr actions. It describes how
+to set up for local development, and how to release changes that you made.
+
 ## Building and testing locally
 
-First, you'll need to have a reasonably modern version of `node` handy. The actions in this repo are
-designed to work with node version 16.
+First, you'll need to have a reasonably modern version of Node handy. The actions in this repo are
+designed to work with Node version 16.
 
 Install the dependencies:
 
@@ -11,10 +14,10 @@ Install the dependencies:
 npm install
 ```
 
-:Build the typescript and package it for distribution
+Build the typescript:
 
 ```bash
-npm run build && npm run package
+npm run build
 ```
 
 Run the tests :heavy_check_mark:  
@@ -41,11 +44,11 @@ Ran all test suites.
 
 ```
 
-## Packaging and Committing changes
+## Packaging and committing changes
 
-Actions are run directly from GitHub repos so we need to commit the generated `dist/` folder. Yes,
-in general this is a horrible practice :grimacing:, but in this case it's necessary for how GH
-Actions operate.
+GitHub Actions are run directly from GitHub repos, so we need to commit the generated `dist/`
+folder. Yes, in general this is a horrible practice :grimacing:, but in this case it's a necessary
+part of how GH Actions operate.
 
 We use [ncc](https://github.com/@vercel/ncc) to generate the packed code in the `dist/` directory.
 You can run this via the command below:
@@ -62,7 +65,10 @@ an action.
 In case you forget to package before committing your changes, there are a couple of safeguards:
 
 1. A [Husky](https://github.com/typicode/husky) pre-commit hook that performs a simple check that
-   you have staged changes to `dist/`, if you have staged any changes to `src/`.
+   you have staged changes to `dist/`, if you have staged any changes to `src/`. This hook is
+   intended as a reminder to the developer that she needs to update the `dist/` folder, but it's not
+   infallible - there are other changes, such as updating the version of an NPM package, that might
+   also require an update to the packaged code.
 
 2. A [GitHub workflow](./.github/workflows/check-dist.yml) that runs as part of the PR validation
    process. This workflow rebuilds the `dist/` folder and compares it to the committed version,
@@ -80,7 +86,7 @@ packaged, and certainly not to add it to a PR.
 
 Versioning for these actions is based on GitHub's [action
 versioning](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-recommendations, with some workflows that automate much of the process.
+recommendations, supported by some workflows that automate much of the process.
 
 The release automation tooling relies on the [changelog](../CHANGELOG.md) to detect the current
 version number. The changelog is assumed to follow [keep a
@@ -90,16 +96,24 @@ changelog](https://keepachangelog.com/en/1.0.0/) conventions.
 
 Release preparation starts by ensuring that the changelog is up to date. The tools assume that the
 changes have been documented in the `Unreleased` section of the changelog, and the process will fail
-if the section is not present. This is to ensure that each release is properly documented for
-consumers.
+if the section is not present.
+
+Using the changelog to determine the version number is a deliberate decision, intended to ensure
+that each release is properly documented for consumers of this action. Most automated processes that
+generate release notes use the Git commit history, maybe with a convention such as [Conventional
+Commits](https://www.conventionalcommits.org/en/v1.0.0/). While conventions can be helpful,
+automating release notes from commit messages means the commit messages have to perform double duty -
+they are a primary means of communication within the team, but they also have to convey what's
+changed to users who are probably unfamiliar with the codebase. Overloading the commit messages in
+this way rarely results in good release notes.
 
 ### Preparing a release PR
 
 Once the `Unreleased` section of the changelog is up to date, it's time to prepare a PR that bumps
 the changelog version. This step is automated - all you need to do is to run the `[autorelease]
-Prepare release PR` GitHub Action. This generates a PR that updates the changelog with the next
-version number (when running the action, you can select what kind of version bump to perform, e.g.
-major, minor, patch, etc.).
+Prepare release PR` GitHub Action. This action generates a PR that updates the changelog to the
+next version number (when running the action, you can select what kind of version bump to perform,
+e.g. major, minor, patch, etc.).
 
 Typically, you will run this action on the `main` branch, as releases are mostly taken from there.
 You might also run this from a `release/*` branch, if you needed to release a fix on an old version
@@ -125,12 +139,14 @@ At this point, an automated workflow kicks in that creates or updates the major 
 `v1`. The process is described in the action versioning
 [documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md).
 
-## The TAG Release Bot
+## The TAG release bot
 
-We use a custom GitHub App to create tokens as part of the release workflows. This is to work around
-the problem that the standard `GITHUB_TOKEN` doesn't trigger further workflows by design. This
-causes us a problem, because the release PR can't be merged onto `main` until the checks run, but
-the check workflows won't get triggered for the above reason.
+We use a custom GitHub App called `tagreleasebot` to create tokens as part of the release workflows.
+This is to work around the problem that, [by
+design](https://docs.github.com/en/actions/using-workflows/triggering-a-workflow#triggering-a-workflow-from-a-workflow),
+the standard `GITHUB_TOKEN` doesn't trigger further workflows. This causes us a problem, because the
+release PR can't be merged onto `main` until the checks run, but the check workflows won't get
+triggered for the above reason.
 
 A GitHub App is the [recommended
 method](https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#authenticating-with-github-app-generated-tokens)
