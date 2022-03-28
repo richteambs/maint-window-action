@@ -72,6 +72,7 @@ jobs:
           ${{ steps.update-changelog.outputs.release-notes }}
         labels: autorelease
         token: ${{ steps.generate-token.outputs.token }}
+        delete-branch: true
 
     - name: Output summary
       run: |
