@@ -121,7 +121,6 @@ release. All you need to do now is validate the release, then publish it.
 
 Your action is now published! :rocket:
 
-At this point, it's a good idea to create or update the major version tag, e.g. `v1`. This is
-currently a manual task, but automation will be added shortly. The process is described in the
-action versioning
+At this point, automation will create or update the major version tag, e.g. `v1`. The process is
+described in the action versioning
 [documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md).
