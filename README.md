@@ -82,6 +82,12 @@ to all the actions in this repository.
 article](https://mbs.atlassian.net/wiki/spaces/DO/pages/2419523603/Creating+an+Azure+Function+App+Service+Connection/)
 documents how to find out the values to use for these parameters.
 
-### Credits
+## Contributing
+
+Information on how you can contribute to this repo is [here](./docs/CONTRIBUTING.md).
+
+Developer documentation is [here](./docs/DevelopingAndReleasing.md).
+
+## Credits
 
 [Rocket Icon Vectors by Vecteezy](https://www.vecteezy.com/free-vector/rocket-icon)
