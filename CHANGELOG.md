@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- Update to latest NPM packages
+
 ### Fixed
 
 - Corrected developer documentation around automatically moving the major tag
